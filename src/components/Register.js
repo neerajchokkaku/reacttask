@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css'; // Reuse the same styles
 
 const Register = () => {
+  const [name, setName] = useState('');
+  const [batch, setbatch] = useState('');
+  const [department, setdepartment] = useState('');
+
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,20 +19,24 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-    
+
+    console.log("Registering user:", { name,batch,department, email, password, userType });
+
     try {
       await axios.post('http://localhost:5000/api/auth/register', {
+        name,
+        batch,
+        department,
         email,
         password,
         userType
       });
-      
-      // Redirect to login page after successful registration
+
       navigate('/login');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
@@ -41,6 +50,28 @@ const Register = () => {
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required  
+            />
+            
+            <label>Batch</label>
+            <input
+              type="number"
+              value={batch}
+              onChange={(e) => setbatch(e.target.value)}
+              required  
+            />
+             <label>department</label>
+            <input
+              type="text"
+              value={department}
+              onChange={(e) => setdepartment(e.target.value)}
+              required  
+            />
             <label>Email</label>
             <input
               type="email"
@@ -85,7 +116,7 @@ const Register = () => {
         </form>
         
         <div className="register-link">
-          <p>Already have an account? <a href="/login">Login</a></p>
+          <p>Already have an account? <Link to="/login">Login</Link></p>
         </div>
       </div>
     </div>

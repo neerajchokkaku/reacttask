@@ -5,7 +5,7 @@ import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('student');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const Login = () => {
     
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', {
+       
         email,
         password,
         userType,
@@ -42,6 +43,9 @@ const Login = () => {
         <h2>Login</h2>
         { <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
+        <div className="form-group">
+           
+          </div>
           <div className="form-group">
             <label>Email</label>
             <input
